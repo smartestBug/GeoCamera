@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">GEO CAMERA</string>
+    <string name="app_description">GEO CAMERA DEMO APPLICATION</string>
+    <string name="title_activity_map">Map</string>
+    <string name="start_camera">Start camera</string>
+    <string name="gallery_dir">Geocam</string> <!-- no translation!!! -->
+    <string name="permission_camera">You have to allow access for the Camera and Image gallery for this application to function. Thanks!</string>
+    <string name="permission_location">You have to allow access for your Location for this application to function. Thanks!</string>
+    <string name="rationale_ask_ok">OK</string>
+    <string name="rationale_ask_cancel">Cancel</string>
+    <string name="permissions_cant_start_camera">Sorry, can\'t start the camera without your permission…</string>
+    <string name="permissions_cant_start_preview">Sorry, can\'t proceed without your permission to access location…</string>
+    <string name="gps_not_available">GPS is not available</string>
+    <string name="gps_not_available_message">We are unable to get your location, would you like to switch location services on for automatic location updates? Or you can enter location manually.</string>
+    <string name="turn_gps_on">TURN GPS ON</string>
+    <string name="manually">MANUALLY</string>
+    <string name="photo_location">Photo position</string>
+    <string name="image_geo_location">Image location:</string>
+    <string name="image_saved">Image saved</string>
+    <string name="set_location_coordinates">Please set location coordinates</string>
+    <string name="no_geodata">No geodata</string>
+    <string name="ok">OK</string>
+</resources>

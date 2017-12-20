@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#ff4081</color>
+
+    <color name="white_alpha">#a1ffffff</color>
+    <color name="gunmetal">#2b2d42</color>
+    <color name="azureish_white">#E0F2F1</color>
+    <color name="silver">#C1C1C1</color>
+    <color name="charcoal">#2C4251</color>
+    <color name="fuzzy_wuzzy">#d16666</color>
+    <color name="android_green">#b6c649</color>
+    <color name="blue_vibe">#466dc1</color>
+    <color name="white">#ffffff</color>
+</resources>
