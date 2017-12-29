@@ -16,11 +16,11 @@ import dev.msemyak.geocam.ui.preview.PreviewActivity
 import dev.msemyak.geocam.utils.Logga
 import kotlinx.android.synthetic.main.activity_camera.*
 import java.io.File
-import javax.inject.Inject
 
 class CameraActivity : AppCompatActivity(), CameraContract.View {
 
-    @Inject lateinit var myPresenter: CameraContract.Presenter
+//    @Inject lateinit var myPresenter: CameraContract.Presenter
+    lateinit var myPresenter: CameraContract.Presenter
     private lateinit var cameraManager: CameraManager
 
     private var backgroundThread: HandlerThread? = null
@@ -30,7 +30,8 @@ class CameraActivity : AppCompatActivity(), CameraContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
 
-        AppBoss.cameraComponent?.inject(this)
+//        AppBoss.cameraComponent?.inject(this)
+        myPresenter = AppBoss.appComponent.getCameraPresenter()
 
         startBackgroundThread()
 

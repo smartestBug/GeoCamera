@@ -1,10 +1,7 @@
 package dev.msemyak.geocam
 
 import android.app.Application
-import com.patloew.rxlocation.RxLocation
-import dev.msemyak.geocam.di.CameraComponent
-import dev.msemyak.geocam.di.CameraModule
-import dev.msemyak.geocam.di.DaggerCameraComponent
+import dev.msemyak.geocam.di.*
 
 class AppBoss : Application() {
     init {
@@ -13,19 +10,16 @@ class AppBoss : Application() {
 
     companion object {
         private var appInstance: AppBoss? = null
-        var cameraComponent: CameraComponent? = null
-        lateinit var rxLocation: RxLocation
-
+        lateinit var appComponent: AppComponent
     }
 
     override fun onCreate() {
         super.onCreate()
 
-        cameraComponent = DaggerCameraComponent.builder()
+        appComponent = DaggerAppComponent.builder()
+                .contextModule(ContextModule(this))
                 .cameraModule(CameraModule())
+                .locationModule(LocationModule())
                 .build()
-
-        rxLocation = RxLocation(this)
-
     }
 }

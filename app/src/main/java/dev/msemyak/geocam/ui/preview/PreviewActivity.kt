@@ -19,6 +19,7 @@ import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.maps.model.LatLng
+import com.patloew.rxlocation.RxLocation
 import dev.msemyak.geocam.AppBoss
 import dev.msemyak.geocam.R
 import dev.msemyak.geocam.ui.map.MapActivity
@@ -40,6 +41,8 @@ class PreviewActivity : AppCompatActivity() {
 
     private var locationSubscription: Disposable? = null
 
+    private lateinit var rxLocation: RxLocation
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_preview)
@@ -55,6 +58,8 @@ class PreviewActivity : AppCompatActivity() {
 
     @SuppressLint("MissingPermission")
     private fun setupPreview() {
+
+        rxLocation = AppBoss.appComponent.getRxLocation()
 
         updateImageLatLngLabel()
 
@@ -93,7 +98,7 @@ class PreviewActivity : AppCompatActivity() {
                     .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
                     .setInterval(5000)
 
-            locationSubscription = AppBoss.rxLocation.location().updates(locationRequest)
+            locationSubscription = rxLocation.location().updates(locationRequest)
                     .subscribe {
                         imageLatLng = LatLng(it.latitude, it.longitude)
                         updateImageLatLngLabel()
@@ -158,7 +163,7 @@ class PreviewActivity : AppCompatActivity() {
             lol.latitude = imageLatLng?.latitude!!
             lol.longitude = imageLatLng?.longitude!!
 
-            AppBoss.rxLocation.geocoding().fromLocation(lol).toObservable()
+            rxLocation.geocoding().fromLocation(lol).toObservable()
                     .subscribe(
                             /* onNext */
                             { address ->

@@ -9,6 +9,7 @@ import java.io.IOException
 internal class ImageSaver( private val image: Image, private val file: File) : Runnable {
 
     override fun run() {
+        val t1 = System.currentTimeMillis()
         val buffer = image.planes[0].buffer
         val bytes = ByteArray(buffer.remaining())
         buffer.get(bytes)
@@ -21,6 +22,7 @@ internal class ImageSaver( private val image: Image, private val file: File) : R
             Logga("File write output error: $e")
         } finally {
             image.close()
+            Logga("Time for imageSaver to save image: ${System.currentTimeMillis() - t1}ms")
             output?.let {
                 try {
                     it.close()

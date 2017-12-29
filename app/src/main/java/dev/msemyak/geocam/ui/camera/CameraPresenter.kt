@@ -68,6 +68,15 @@ class CameraPresenter : CameraContract.Presenter {
             val cameraDirection = cameraCharacteristics.get(CameraCharacteristics.LENS_FACING)
             if (cameraDirection != null && cameraDirection == CameraCharacteristics.LENS_FACING_BACK) {
                 cameraID = tempCamID
+
+                val deviceLevel = cameraCharacteristics.get(CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL)
+                when (deviceLevel) {
+                    CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_LEGACY -> Logga("Camera support level: LEGACY")
+                    CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_LIMITED -> Logga("Camera support level: LIMITED")
+                    CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_FULL -> Logga("Camera support level: FULL")
+                    CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_3 -> Logga("Camera support level: 3")
+                }
+
                 sensorOrientation = cameraCharacteristics.get(CameraCharacteristics.SENSOR_ORIENTATION)
                 flashSupported = cameraCharacteristics.get(CameraCharacteristics.FLASH_INFO_AVAILABLE) == true
 
@@ -93,7 +102,11 @@ class CameraPresenter : CameraContract.Presenter {
                             val file = File(fileSaveFolder, filename)
                             capturedImageFilename = file.path
 
-                            backgroundHandler?.post(ImageSaver(it.acquireNextImage(), file))
+                            val t1 = System.currentTimeMillis()
+                            val img = it.acquireNextImage()
+                            Logga("Time for imageReader.acquireNextImage: ${System.currentTimeMillis() - t1}ms")
+
+                            backgroundHandler?.post(ImageSaver(img, file))
 
                         }, null)
 
@@ -145,7 +158,9 @@ class CameraPresenter : CameraContract.Presenter {
         try {
             captureCaptureRequest = cameraDevice?.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE)!!.run {
                 addTarget(captureSurface)
+//                set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE)
                 set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE)
+
                 set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH)
                 set(CaptureRequest.JPEG_ORIENTATION, (ORIENTATIONS.get(myView?.getScreenRotation()!!) + sensorOrientation + 270) % 360)
                 build()
@@ -185,10 +200,12 @@ class CameraPresenter : CameraContract.Presenter {
 
         try {
             cameraCaptureSession?.apply {
-                stopRepeating()
-                abortCaptures()
+                val t2 = System.currentTimeMillis()
+//                stopRepeating()
+//                abortCaptures()
                 capture(captureCaptureRequest, object : CameraCaptureSession.CaptureCallback() {
                     override fun onCaptureCompleted(session: CameraCaptureSession, request: CaptureRequest, result: TotalCaptureResult) {
+                        Logga("Time for CAPTURE: ${System.currentTimeMillis() - t2}ms")
                         myView?.openPreviewActivity(capturedImageFilename)
                     }
                 }, backgroundHandler)
